@@ -2,7 +2,11 @@
 // Instantiate our main Vue Instance
 const app = Vue.createApp({
     data() {
-        return {
+        return {components: {
+            'home': Home,
+            'upload-form': UploadForm
+         },
+
 
         }
     }
@@ -22,6 +26,9 @@ app.component('app-header', {
           <li class="nav-item active">
             <router-link class="nav-link" to="/">Home <span class="sr-only">(current)</span></router-link>
           </li>
+          <li class="nav-item">
+                <router-link to="/upload" class="nav-link">Photo Upload </router-link>
+            </li>
         </ul>
       </div>
     </nav>
@@ -44,10 +51,10 @@ app.component('app-footer', {
     }
 });
 
-app.component('upload-form',{
+const UploadForm={
    name: 'UploadForm',
    template: `
-   <h2> Upload Form Using Flask and VueJs </h2>
+   <h2> Upload Form </h2>
    <form @submit.prevent="uploadPhoto" id="uploadForm">
        <div class="form-group">
            <label for="description"> Description </label>
@@ -88,7 +95,7 @@ methods: {
             })
     }
 }
-});
+};
 
 
 
@@ -122,7 +129,7 @@ const NotFound = {
 const routes = [
     { path: "/", component: Home },
     // Put other routes here
-    { path: "/upload", component: uploadForm}
+    { path: "/upload", component: UploadForm},
 
     // This is a catch all route in case none of the above matches
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }
