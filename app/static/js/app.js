@@ -44,6 +44,55 @@ app.component('app-footer', {
     }
 });
 
+app.component('upload-form',{
+   name: 'UploadForm',
+   template: `
+   <h2> Upload Form Using Flask and VueJs </h2>
+   <form @submit.prevent="uploadPhoto" id="uploadForm">
+       <div class="form-group">
+           <label for="description"> Description </label>
+           <input type="text" class="form-control" name="description" id="description"/>
+        </div>
+        <div class="form-group">
+            <label for="photo"> Upload Photo Here </label>
+            <input type="file" class="form-control" name="photo" id="photo"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary"> Submit </button>
+    </form>
+   ` ,
+
+
+methods: {
+    uploadPhoto(){
+        let uploadForm = document.getElementById('uploadForm');
+        let form_data = new FormData(uploadForm);
+        fetch("/api/upload", {
+            method: 'POST',
+            body: form_data,
+            headers: {
+                'X-CSRFToken': token
+
+            },
+            credentials: 'same-origin'
+        })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(jsonResponse){
+                //display a success message
+                console.log(jsonResponse);
+            })
+            .catch(function(error){
+                console.log(error);
+            })
+    }
+}
+});
+
+
+
+
 const Home = {
     name: 'Home',
     template: `
@@ -73,6 +122,7 @@ const NotFound = {
 const routes = [
     { path: "/", component: Home },
     // Put other routes here
+    { path: "/upload", component: uploadForm}
 
     // This is a catch all route in case none of the above matches
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }

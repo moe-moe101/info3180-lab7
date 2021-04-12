@@ -14,11 +14,11 @@ from .forms import UploadForm
 ###
 # Routing for your application.
 ###
-@app.route('/api/upload', method=['GET','POST'])
+@app.route('/api/upload', methods=['GET','POST'])
 def upload():
-    photoform = UpoladForm()
+    photoform = UploadForm()
     if request.method == 'POST' and photoform.validate_on_submit():
-        decription = photoform.description.data 
+        description = photoform.description.data 
         photo = photoform.photo.data
         filename = secure_filename(photo.filename)
 
